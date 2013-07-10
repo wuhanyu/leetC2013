@@ -19,16 +19,12 @@ public class BestTimetoBuyandSellStock {
 	}
 
 	int maxP(int[] prices, int start, int end) {
-		if (start == end) return 0;
-		int mid = (start + end) / 2;
+		int min = prices[0];
 		int max = 0;
-		int maxval = Integer.MIN_VALUE;
-		int minval = Integer.MAX_VALUE;
-		for (int i = start; i <= mid; i++) minval = Math.min(minval, prices[i]);
-		for (int i = mid + 1; i <= end; i++) maxval = Math.max(maxval, prices[i]);
-		max = maxval - minval;
-		max = Math.max(max, maxP(prices, start, mid));
-		max = Math.max(max, maxP(prices, mid + 1, end));
+		for (int i = start; i <= end; i++){
+			min = Math.min(min, prices[i]);
+			max = Math.max(max, prices[i] - min);
+		}
 		return max;
 	}
 
