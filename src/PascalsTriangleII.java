@@ -2,13 +2,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * @author Simon@itechs 
- *         Given an index k, return the kth row of the Pascal's
- *         triangle.
+ * @author Simon@itechs
+ * @problem Given an index k, return the kth row of the Pascal's triangle.
  * 
- *         For example, given k = 3, Return [1,3,3,1].
+ *          For example, given k = 3, Return [1,3,3,1].
  * 
- *         Note: Could you optimize your algorithm to use only O(k) extra space?
+ *          Note: Could you optimize your algorithm to use only O(k) extra
+ *          space?
  */
 public class PascalsTriangleII {
 
