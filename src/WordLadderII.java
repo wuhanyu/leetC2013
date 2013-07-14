@@ -33,10 +33,10 @@ public class WordLadderII {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		String start = "hot";
-		String end = "dog";
+		String start = "red";
+		String end = "tax";
 		HashSet<String> dict = new HashSet<String>();
-		String[] input = {"hot","cog","dog","tot","hog","hop","pot","dot"};
+		String[] input = {"ted","tex","red","tax","tad","den","rex","pee"};
 		for (int i = 0; i < input.length; i++) {
 			dict.add(input[i]);
 		}
@@ -69,7 +69,7 @@ public class WordLadderII {
 				String node = q.remove(0);
 				if (isReachable(node, end)){
 					parent.put(end, node);
-					result.add(getResult(start, end, parent));
+					addResult(start, end, parent, result, new ArrayList<String>());
 					fflag = true;
 				}
 				for (int i = 0; i < node.length(); i++) {
@@ -81,15 +81,24 @@ public class WordLadderII {
 						String key = String.valueOf(cc);
 						if (dict.contains(key)) {
 							flag = false;
-							toReach.add(key);
-							parent.put(key, node);
-							dict.remove(key);
+							if (toReach.contains(key)){
+								String newkey = parent.get(key);
+								newkey += ";" + node;
+								parent.put(key, newkey);
+							} else {
+								toReach.add(key);
+								parent.put(key, node);
+							}
+
 						}
 					}
 				}
 			}
 			if (flag || fflag)
 				return result;
+			for (String key : toReach){
+				dict.remove(key);
+			}
 			q = toReach;
 //			 System.out.println(toReach);
 //			 System.out.println("2:" + dict);
@@ -98,14 +107,19 @@ public class WordLadderII {
 		return result;
 	}
 	
-	ArrayList<String> getResult(String start, String key, HashMap<String, String> parent){
-		ArrayList<String> result = new ArrayList<String>();
-		while (!key.equals(start)){
-			result.add(0, key);
-			key = parent.get(key);
+	void addResult(String start, String key, HashMap<String, String> parent, ArrayList<ArrayList<String>> result, ArrayList<String> list){
+		if(!key.equals(start)){
+			String[] keys = key.split(";");
+			for (int i = 0; i < keys.length; i++){
+				list.add(0, keys[i]);
+				addResult(start, parent.get(keys[i]), parent, result, list);
+				list.remove(0);
+			}
+		} else {
+			list.add(0, start);
+			result.add((ArrayList<String>) list.clone());
+			list.remove(0);
 		}
-		result.add(0, start);
-		return result;
 	}
 
 	boolean isReachable(String a, String b) {
