@@ -20,6 +20,8 @@ import java.util.Queue;
  *          board should be:
  * 
  *          X X X X X X X X X X X X X O X X
+ * 
+ * @note DFS without recursion
  */
 public class SurroundedRegions {
 
@@ -255,7 +257,7 @@ public class SurroundedRegions {
 						&& !visited[i][j]
 						&& (i == 0 || j == 0 || i == board.length - 1 || j == board[j].length - 1)) {
 					q.add(new VisitPoint(i, j, visited));
-					while (!q.isEmpty()) {	
+					while (!q.isEmpty()) {
 						VisitPoint p = q.remove();
 						if (p.x > 0 && !visited[p.x - 1][p.y]
 								&& board[p.x - 1][p.y] == 'O')
