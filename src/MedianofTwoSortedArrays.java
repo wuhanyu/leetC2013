@@ -16,57 +16,60 @@ public class MedianofTwoSortedArrays {
 	}
 
 	public double findMedianSortedArrays(int A[], int B[]) {
-		// Start typing your Java solution below
-		// DO NOT write main() function
-		int ai, bi, aj, bj;
+		int n = A.length + B.length;
+		if (n == 0) return 0;
+		int ai, bi;
 		ai = 0;
 		bi = 0;
-		aj = A.length - 1;
-		bj = B.length - 1;
-		int n = A.length + B.length;
-		if (n == 0)
-			return 0;
-		int upper, lower;
-		while (n > 0) {
-			if (A.length == 0 || ai == A.length)
+		double median = 0;
+		if (n % 2 == 1){
+			for (int i = 0; i < n / 2 + 1; i++){
+				if (ai == A.length){
+					median = B[bi];
+					bi++;
+				} else if (bi == B.length){
+					median = A[ai];
+					ai++;
+				} else if (A[ai] <  B[bi]){
+					median = A[ai];
+					ai++;
+				} else {
+					median = B[bi];
+					bi++;
+				}
+			}
+		} else {
+			int lower = 0, upper;
+			for (int i = 0; i < n / 2; i++){
+				if (ai == A.length){
+					lower = B[bi];
+					bi++;
+				} else if (bi == B.length){
+					lower = A[ai];
+					ai++;
+				} else if (A[ai] <  B[bi]){
+					lower = A[ai];
+					ai++;
+				} else {
+					lower = B[bi];
+					bi++;
+				}				
+			}
+			if (ai == A.length){
+				upper = B[bi];
 				bi++;
-			else if (B.length == 0 || bi == B.length)
+			} else if (bi == B.length){
+				upper = A[ai];
 				ai++;
-			else if (A[ai] > B[bi])
+			} else if (A[ai] <  B[bi]){
+				upper = A[ai];
+				ai++;
+			} else {
+				upper = B[bi];
 				bi++;
-			else
-				ai++;
-
-			if (A.length == 0 || aj < 0)
-				bj--;
-			else if (B.length == 0 || bj < 0)
-				aj--;
-			else if (A[aj] < B[bj])
-				bj--;
-			else
-				aj--;
-			n -= 2;
+			}
+			median = (double)(upper + lower) / 2;
 		}
-		if (A.length == 0)
-			lower = B[bi - 1];
-		else if (B.length == 0)
-			lower = A[ai - 1];
-		else if (ai == A.length)
-			lower = B[bi];
-		else if (bi == B.length)
-			lower = A[ai];
-		else
-			lower = Math.min(A[ai], B[bi]);
-		if (A.length == 0)
-			upper = B[bj + 1];
-		else if(B.length == 0)
-			upper = A[aj + 1];
-		else if (aj < 0)
-			upper = B[bj];
-		else if (bj < 0)
-			upper = A[aj];
-		else
-			upper = Math.max(A[ai], B[bi]);
-		return (double) (lower + upper) / 2;
+		return median;
 	}
 }
