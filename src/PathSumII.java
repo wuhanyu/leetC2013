@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  * @author Simon@itechs
@@ -18,29 +19,43 @@ public class PathSumII {
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-
+		TreeNode root = new TreeNode(1);
+		root.left = new TreeNode(2);
+		root.right = new TreeNode(3);
+		root.left.left = new TreeNode(1);
+		System.out.println(new PathSumII().pathSum(root, 4));
 	}
 	
-    public ArrayList<ArrayList<Integer>> pathSum(TreeNode root, int sum) {
+	public ArrayList<ArrayList<Integer>> pathSum(TreeNode root, int sum) {
     	ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
-    	findPathSum(root, sum, new ArrayList(), result);
+    	if (root == null) return result;
+    	ArrayList<Integer> list = new ArrayList<Integer>();
+    	Stack<TreeNode> st = new Stack<TreeNode>();
+    	Stack<Integer> slevel = new Stack<Integer>();
+    	st.push(root);
+    	slevel.add(0);
+    	while (!st.isEmpty()){
+    		TreeNode nt = st.pop();
+    		int level = slevel.pop();
+    		while (list.size() > level){
+    			sum += list.get(list.size() - 1);
+    			list.remove(list.size() - 1);
+    		}
+    		list.add(nt.val);
+    		sum -= nt.val;
+    		if (nt.left == null && nt.right == null){
+    			if (sum == 0) result.add((ArrayList<Integer>) list.clone());
+    		}
+    		if (nt.left != null){
+    			st.push(nt.left);
+    			slevel.push(level + 1);
+    		}
+    		if (nt.right != null){
+    			st.push(nt.right);
+    			slevel.push(level + 1);
+    		}	
+    	}
     	return result;
     }
-
-	public void findPathSum(TreeNode root, int sum, ArrayList<Integer> list, ArrayList<ArrayList<Integer>> result) {
-		if (root == null) return;
-		if (root.left == null && root.right == null) {
-			if (root.val == sum){
-				list.add(root.val);
-				result.add((ArrayList<Integer>) list.clone());
-				list.remove(list.size() - 1);
-			}
-		} else {
-			list.add(root.val);
-			findPathSum(root.left, sum - root.val, list, result);
-			findPathSum(root.right, sum - root.val, list, result);
-			list.remove(list.size() - 1);
-		}
-	}
 
 }
