@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Combinations {
     static ArrayList<ArrayList<Integer>> result;
     static boolean[] flag;
