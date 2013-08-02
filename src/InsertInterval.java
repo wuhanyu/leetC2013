@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Definition for an interval.
  * public class Interval {
@@ -29,3 +31,10 @@ public class InsertInterval {
         return intervals;
     }
 }
+
+ class Interval {
+     int start;
+     int end;
+     Interval() { start = 0; end = 0; }
+     Interval(int s, int e) { start = s; end = e; }
+ }
