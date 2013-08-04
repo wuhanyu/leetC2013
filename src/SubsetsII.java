@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class SubsetsII {
     public ArrayList<ArrayList<Integer>> subsetsWithDup(int[] num) {
         ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
