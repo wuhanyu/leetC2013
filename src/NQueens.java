@@ -30,7 +30,7 @@ public class NQueens {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		new NQueens().solveNQueens(3);
+		new NQueens().solveNQueens(5);
 	}
 	
 	static boolean[] x, xy, xyn;
