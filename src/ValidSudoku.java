@@ -1,37 +1,21 @@
 public class ValidSudoku {
+    static boolean[][] x, y, box;
     public boolean isValidSudoku(char[][] board) {
-        boolean[] flag = null;
-        //x
+        x = new boolean[9][9];
+        y = new boolean[9][9];
+        box = new boolean[9][9];
         for (int i = 0; i < 9; i++){
-            flag = new boolean[9];
             for (int j = 0; j < 9; j++){
-                if (board[i][j] == '.') continue;
-                if (!flag[board[i][j] - '1']) flag[board[i][j] - '1'] = true;
-                else return false;
-            }
-            
-        }
-        //y
-        for (int i = 0; i < 9; i++){
-            flag = new boolean[9];
-            for (int j = 0; j < 9; j++){
-                if (board[j][i] == '.') continue;
-                if (!flag[board[j][i] - '1']) flag[board[j][i] - '1'] = true;
-                else return false;
-            }
-            
-        }
-        //box
-        for (int i = 0; i < 3; i++){
-            for (int j = 0; j < 3; j++){
-                flag = new boolean[9];
-                for (int k = 0; k < 9; k++){
-                    if (board[i * 3 + k / 3][j * 3 + k % 3] == '.') continue;
-                    if (!flag[board[i * 3 + k / 3][j * 3 + k % 3] - '1']) flag[board[i * 3 + k / 3][j * 3 + k % 3] - '1'] = true;
-                    else return false;                  
+                if (board[i][j] != '.'){
+                    int num = board[i][j] - '1';
+                    if (x[i][num]) return false;
+                    x[i][num] = true;
+                    if (y[j][num]) return false;
+                    y[j][num] = true;
+                    if (box[j / 3 * 3 + i / 3][num]) return false;
+                    box[j / 3 * 3 + i / 3][num] = true;
                 }
             }
-            
         }
         return true;
     }
