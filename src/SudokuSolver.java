@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class SudokuSolver {
     static boolean[][] x, y, box;
     public void solveSudoku(char[][] board) {

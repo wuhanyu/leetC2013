@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class ThreeSumClosest {
     public int threeSumClosest(int[] num, int target) {
         if (num.length == 0) return 0;

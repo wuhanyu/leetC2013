@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class Anagrams {
     public ArrayList<String> anagrams(String[] strs) {
         ArrayList<String> result = new ArrayList<String>();
