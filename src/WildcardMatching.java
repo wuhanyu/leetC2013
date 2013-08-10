@@ -29,49 +29,47 @@ public class WildcardMatching {
 		System.out.println(new WildcardMatching().isMatch("aa", "aa"));
 	}
 	
-	public class Solution {
-	    public boolean isMatch(String s, String p) {
-	        String[] strs = p.split("\\*");
-	        if (p.length() > 0 && strs.length == 0) return true;
-	        if (s.length() == 0 && p.length() == 0) return true;
-	        if (p.length() == 0) return false;
-	        if (p.charAt(0) != '*' && p.charAt(p.length() - 1) != '*' && strs.length == 1) {
-	            if (s.length() != p.length()) return false;
-	            return equalstr(0, s, p);
-	        }
-	        int si = 0;
-	        int i = 0;
-	        while (i < strs.length && si < s.length()){
-	            int index = getIndex(si, s, strs[i]);
-	            if (i == 0 && p.charAt(0) != '*' && index != 0) return false;
-	            if (index < 0) break;
-	            else {
-	                si = index + strs[i].length();
-	            }
-	            i++;
-	        }
-	        int lastPos  = s.length() - strs[strs.length - 1].length();
-	        if (lastPos >= 0 && p.charAt(p.length() - 1) != '*' && getIndex(lastPos, s, strs[strs.length - 1]) != lastPos) return false; 
-	        if (i == strs.length) return true;     
-	        return false;
-	    }
-	    
-	    int getIndex(int start, String s, String p){
-	        for (int i = start; i <= s.length() - p.length(); i++){
-	            if (equalstr(i, s, p)) return i;
-	        }
-	        return -1;
-	    }
-	    
-	    boolean equalstr(int start, String s, String p){
-	        if (s.length() - start < p.length()) return false;
-	        int j = 0;
-	        while (j < p.length() && (p.charAt(j) == '?' || s.charAt(start + j) == p.charAt(j))){
-	            j++;
-	        }
-	        if (j == p.length()) return true;   
-	        return false;
-	    }
-	}
+    public boolean isMatch(String s, String p) {
+        String[] strs = p.split("\\*");
+        if (p.length() > 0 && strs.length == 0) return true;
+        if (s.length() == 0 && p.length() == 0) return true;
+        if (p.length() == 0) return false;
+        if (p.charAt(0) != '*' && p.charAt(p.length() - 1) != '*' && strs.length == 1) {
+            if (s.length() != p.length()) return false;
+            return equalstr(0, s, p);
+        }
+        int si = 0;
+        int i = 0;
+        while (i < strs.length && si < s.length()){
+            int index = getIndex(si, s, strs[i]);
+            if (i == 0 && p.charAt(0) != '*' && index != 0) return false;
+            if (index < 0) break;
+            else {
+                si = index + strs[i].length();
+            }
+            i++;
+        }
+        int lastPos  = s.length() - strs[strs.length - 1].length();
+        if (lastPos >= 0 && p.charAt(p.length() - 1) != '*' && getIndex(lastPos, s, strs[strs.length - 1]) != lastPos) return false; 
+        if (i == strs.length) return true;     
+        return false;
+    }
+    
+    int getIndex(int start, String s, String p){
+        for (int i = start; i <= s.length() - p.length(); i++){
+            if (equalstr(i, s, p)) return i;
+        }
+        return -1;
+    }
+    
+    boolean equalstr(int start, String s, String p){
+        if (s.length() - start < p.length()) return false;
+        int j = 0;
+        while (j < p.length() && (p.charAt(j) == '?' || s.charAt(start + j) == p.charAt(j))){
+            j++;
+        }
+        if (j == p.length()) return true;   
+        return false;
+    }
 
 }
