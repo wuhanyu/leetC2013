@@ -1,23 +1,30 @@
 public class ThreeSum {
     public ArrayList<ArrayList<Integer>> threeSum(int[] num) {
         ArrayList<ArrayList<Integer>> result = new ArrayList<ArrayList<Integer>>();
+        if (num.length == 0) return result;
         Arrays.sort(num);
-        explore(0, 0, 0, num, new ArrayList<Integer>(), result);
-        return result;
-    }
-    
-    void explore(int level, int start, int sum, int[] num, ArrayList<Integer> list, ArrayList<ArrayList<Integer>> result){
-        if (level == 3) {
-            if (sum == 0) {
-                result.add((ArrayList<Integer>)list.clone());
+        for (int i = 0; i < num.length; i++){
+            int k = i + 1;
+            int p = num.length - 1;
+            while (k < p){
+                if (num[k] + num[p] + num[i] > 0){
+                    p--;
+                } else if (num[k] + num[p] + num[i] < 0){
+                    k++;
+                } else {
+                    ArrayList<Integer> list = new ArrayList<Integer>();
+                    list.add(num[i]);
+                    list.add(num[k]);
+                    list.add(num[p]);
+                    result.add(list);
+                    p--;
+                    k++;
+                    while (k < p && k > 0 && num[k] == num[k-1]) k++;
+                    while (k < p && p < num.length - 1 && num[p] == num[p+1]) p--;
+                }
             }
-        } else {
-            for (int i = start; i < num.length; i++){
-                list.add(num[i]);
-                explore(level + 1, i + 1, sum + num[i], num, list, result);
-                while (i < num.length - 1 && num[i] == num[i+1]) i++;
-                list.remove(list.size() - 1);
-            }
+            while (i < num.length - 1 && num[i] == num[i+1]) i++;
         }
+        return result;
     }
 }
