@@ -1,46 +1,33 @@
 /**
- * 
- */
-
-/**
- * @author Simon
- * @see http://leetcode.com/onlinejudge#question_101
- * @problem Given a binary tree, check whether it is a mirror of itself (ie,
- *          symmetric around its center).
- * 
- *          For example, this binary tree is symmetric:
- * 
- *          1 / \ 2 2 / \ / \ 3 4 4 3 But the following is not:
- * 
- *          1 / \ 2 2 \ \ 3 3 Note: Bonus points if you could solve it both
- *          recursively and iteratively.
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
  */
 public class SymmetricTree {
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
-	
     public boolean isSymmetric(TreeNode root) {
-        // Start typing your Java solution below
-        // DO NOT write main() function
         if (root == null) return true;
-        String[] left = getTree(root.left).split(":");
-        String[] right = getTree(root.right).split(":");
-        if (left.length != right.length) return false;
-        for (int i = 0; i < left.length; i++){
-        	if (!left[i].equals(right[right.length - i - 1])) return false;
+        Stack<TreeNode> left = new Stack<TreeNode>();
+        Stack<TreeNode> right = new Stack<TreeNode>();
+        left.push(root.left);
+        right.push(root.right);
+        while (!left.isEmpty() && !right.isEmpty()){
+            TreeNode l = left.pop();
+            TreeNode r = right.pop();
+            if (l == null && r == null) continue;
+            if (l == null || r == null) return false;
+            if (l.val == r.val) {
+                left.push(l.left);
+                right.push(r.right);
+                left.push(l.right);
+                right.push(r.left);
+            } else {
+                return false;
+            }
         }
         return true;
     }
-    
-    public String getTree(TreeNode root){
-    	if (root == null) return "#";
-    	return getTree(root.left) + ":" + root.val + ":" +getTree(root.right);
-    }
-
 }
