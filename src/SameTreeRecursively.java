@@ -7,7 +7,7 @@
  *     TreeNode(int x) { val = x; }
  * }
  */
-public class Solution {
+public class SameTreeRecursively {
     public boolean isSameTree(TreeNode p, TreeNode q) {
         Stack<TreeNode> ps = new Stack<TreeNode>();
         Stack<TreeNode> qs = new Stack<TreeNode>();
