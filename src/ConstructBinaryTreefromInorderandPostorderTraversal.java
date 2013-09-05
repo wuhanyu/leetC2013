@@ -1,50 +1,35 @@
 /**
- * 
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
  */
-
-/**
- * @author Simon
- * @see http://leetcode.com/onlinejudge#question_106
- * @problem Given inorder and postorder traversal of a tree, construct the
- *          binary tree.
- * 
- *          Note: You may assume that duplicates do not exist in the tree.
- */
-public class ConstructBinaryTreefromInorderandPostorderTraversal {
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		int[] inorder = {1, 2};
-		int[] postorder = {2, 1};
-		new ConstructBinaryTreefromInorderandPostorderTraversal().buildTree(inorder, postorder);
-	}
-	
+public class Solution {
+    static int pi;
     public TreeNode buildTree(int[] inorder, int[] postorder) {
-        int n = inorder.length;
-        if (n == 0) return null;
-        TreeNode root = new TreeNode(postorder[n-1]);
-        int p = 0;
-        while (inorder[p] != root.val){
-        	p++;
-        }
-        int[] leftio = new int[p];
-        int[] leftpo = new int[p];
-        int[] rightio = new int[n - p - 1];
-        int[] rightpo = new int[n - p - 1];
-        for (int i = 0; i < p; i++){
-        	leftio[i] = inorder[i];
-        	leftpo[i] = postorder[i];
-        }
-        for (int i = p + 1; i < n; i++){
-        	rightio[i - p - 1] = inorder[i];
-        	rightpo[i - p - 1] = postorder[i - 1];
-        }
-        root.left = buildTree(leftio, leftpo);
-        root.right = buildTree(rightio, rightpo);
-        return root;
+        pi = postorder.length - 1;
+        return buildTree(inorder, postorder, 0, inorder.length - 1);
     }
-
+    
+    public TreeNode buildTree(int[] inorder, int[] postorder, int is, int ie){
+        if (is <= ie){
+            TreeNode root = new TreeNode(postorder[pi]);
+            int mid = getIndex(inorder, postorder[pi]);
+            pi--;            
+            root.right = buildTree(inorder, postorder, mid + 1, ie);
+            root.left = buildTree(inorder, postorder, is, mid - 1);
+            return root;
+        }
+        return null;
+    }
+    
+    int getIndex(int[] array, int num){
+        for (int i = 0; i < array.length; i++){
+            if (array[i] == num) return i;
+        }
+        return -1;
+    }
 }
