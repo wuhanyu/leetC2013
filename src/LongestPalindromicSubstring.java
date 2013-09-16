@@ -1,54 +1,30 @@
-/**
- * 
- */
-
-/**
- * @author Simon
- * @see http://leetcode.com/onlinejudge#question_5
- * @problem Given a string S, find the longest palindromic substring in S. You
- *          may assume that the maximum length of S is 1000, and there exists
- *          one unique longest palindromic substring.
- */
-public class LongestPalindromicSubstring {
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		String s = "abcac";
-		System.out.println(new LongestPalindromicSubstring().longestPalindrome(s));
-	}
-	
-	static boolean[][] isPali;
+/*
+* Manacher's ALGORITHM O(n)
+*/
+public class Solution {
     public String longestPalindrome(String s) {
-        // Start typing your Java solution below
-        // DO NOT write main() function
-    	int maxi = 0;
-    	int maxj = 0;
-    	int maxlen = 0;
-    	isPali = new boolean[s.length()][s.length()];
-    	for (int i = 0; i < s.length(); i++){
-    		for (int j = i; j >= 0; j--){
-    			if (isPalindrome(j, i, s) && (i - j + 1 > maxlen)){
-    				maxlen = i - j + 1;
-    				maxj = j;
-    				maxi = i;
-    			}
-    		}
-    	}
-    	
-    	return s.substring(maxj, maxi + 1);
-        
+        if (s.length() < 1) return "";
+        char[] chs = new char[s.length() * 2 + 3];
+        chs[0] = '$';
+        chs[chs.length - 1] = '^';
+        for (int i = 0; i < s.length(); i++) chs[2 * i + 2] = s.charAt(i);
+        for (int i = 0; i < s.length() + 1; i++) chs[2 * i + 1] = '#';
+        int[] p = new int[chs.length];
+        int mx = 0;
+        int id = 0;
+        for (int i = 1; i < p.length - 1; i++) {
+            p[i] = mx > i? Math.min(p[2 * id - i], mx - i) : 1;
+            while (chs[i + p[i]] == chs[i - p[i]]) p[i]++;
+            if (i + p[i] > mx) {
+                mx = i + p[i];
+                id = i;
+            }
+        }
+        int maxi = 1;
+        for (int i = 1; i < p.length; i++) {
+            if (p[i] > p[maxi]) maxi = i;
+        }
+        int start = (maxi - p[maxi]) / 2;
+        return s.substring(start, start + p[maxi] - 1);
     }
-    
-    boolean isPalindrome(int i, int j, String s){
-    	if (isPali[i][j]) return true;
-    	if (s.charAt(i) == s.charAt(j) && (j - i <= 2 || isPali[i+1][j-1])){
-    		isPali[i][j] = true;
-    		return true;
-    	}
-    	return false;
-    }
-
 }
