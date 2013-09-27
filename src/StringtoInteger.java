@@ -40,57 +40,32 @@
  *       4) - / +
  */
 public class StringtoInteger {
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public int atoi(String str) {
-		if (str.length() == 0)
-			return 0;
-		int start = 0;
-		while (str.charAt(start) == ' ')
-			start++;
-		boolean isNeg = false;
-		if (start < str.length()
-				&& (str.charAt(start) == '-' || str.charAt(start) == '+')) {
-			if (str.charAt(start) == '-')
-				isNeg = true;
-			start++;
-		}
-
-		if (start < str.length() && !isInt(str.charAt(start)))
-			return 0;
-		int val = 0;
-		for (int i = start; i < str.length(); i++) {
-			if (isInt(str.charAt(i))) {
-				if (!isNeg
-						&& (val > 214748364 || (val == 214748364 && str
-								.charAt(i) - '0' > 7)))
-					return Integer.MAX_VALUE;
-				if (isNeg
-						&& (val > 214748364 || (val == 214748364 && str
-								.charAt(i) - '0' > 8)))
-					return Integer.MIN_VALUE;
-				val *= 10;
-				val += str.charAt(i) - '0';
-			} else {
-				break;
-			}
-		}
-		if (isNeg)
-			val *= -1;
-		return val;
-
-	}
-
-	boolean isInt(char c) {
-		if (c - '0' >= 10 || c - '0' < 0)
-			return false;
-		return true;
-	}
+    public int atoi(String str) {
+        int start = 0;
+        int val = 0;
+        while (start < str.length() && str.charAt(start) == ' ') start++;
+        int sign = 1;
+        if (start < str.length() && (str.charAt(start) == '-' || str.charAt(start) == '+')) {
+            if (str.charAt(start++) == '-') sign = -1;
+        }
+        for (int i = start; i < str.length(); i++) {
+            if (isInt(str.charAt(i))) {
+                int num = str.charAt(i) - '0';
+                if (val > Integer.MAX_VALUE / 10 || (val == Integer.MAX_VALUE / 10 && num > Integer.MAX_VALUE % 10)){
+                    if (sign > 0) return Integer.MAX_VALUE;
+                    else return Integer.MIN_VALUE;
+                }
+                val *= 10;
+                val += num;
+            } else {
+                break;
+            }
+        }
+        return val * sign;
+    }
+    
+    boolean isInt(char c) {
+        if (c - '0' >= 0 && c -'0' < 10) return true;
+        else return false;
+    }
 }
