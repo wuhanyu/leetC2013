@@ -10,7 +10,23 @@
 public class Solution {
     public boolean hasPathSum(TreeNode root, int sum) {
         if (root == null) return false;
-        if (root.left == null && root.right == null && root.val == sum) return true;
-        return hasPathSum(root.left, sum - root.val) || hasPathSum(root.right, sum - root.val);
+        Stack<TreeNode> st = new Stack<TreeNode>();
+        Stack<Integer> sumst = new Stack<Integer>();
+        st.push(root);
+        sumst.push(sum);
+        while (!st.isEmpty()) {
+            TreeNode e = st.pop();
+            int esum = sumst.pop();
+            if (e.left == null && e.right == null && e.val == esum) return true;
+            if (e.left != null) {
+                st.push(e.left);
+                sumst.push(esum - e.val);
+            }
+            if (e.right != null) {
+                st.push(e.right);
+                sumst.push(esum - e.val);
+            }
+        }
+        return false;
     }
 }
