@@ -10,40 +10,34 @@ public class CopyListwithRandomPointer {
     public RandomListNode copyRandomList(RandomListNode head) {
         // Note: The Solution object is instantiated only once and is reused by each test case.
         
-        //O(n) space, O(n) time
+        //O(1) extra space, O(n) time
         if (head == null) return null;
-        //create
-        RandomListNode nhead = new RandomListNode(head.label);
+        //Create the copy of node 1 and insert it between node 1 & node 2 in original Linked List, create the copy of 2 and insert it between 2 & 3.. Continue in this fashion, add the copy of N afte the Nth node
         RandomListNode p = head;
+        while (p != null) {
+            RandomListNode copy = new RandomListNode(p.label);
+            copy.next = p.next;
+            p.next = copy;
+            p = copy.next;
+        }
+        RandomListNode nhead = head.next;
+        //add link: original->next->arbitrary = original->arbitrary->next;
+        p = head;
+        while (p != null) {
+            if (p.random != null)
+                p.next.random = p.random.next;
+            p = p.next.next;
+        }
+        //resotre:original->next = original->next->next;copy->next = copy->next->next;
+        p = head;
         RandomListNode np = nhead;
-        RandomListNode next;
-        ArrayList<RandomListNode> ori = new ArrayList<RandomListNode>();
-        while (p.next != null) {
-            ori.add(p);
-            np.next = new RandomListNode(p.next.label);
-            next = p.next;
-            p.next = np;
-            np.random = p;
-            p = next;
-            np = np.next;
-        } 
-        ori.add(p);
-        p.next = np;
-        np.random = p;
-        //create link
-        np = nhead;
-        while (np != null) {
-            if (np.random.random != null)
-                np.random = np.random.random.next;
-            else
-                np.random = null;
+        while (np.next != null) {
+            p.next = np.next;
+            p = p.next;
+            np.next = p.next;
             np = np.next;
         }
-        //restore
-        for (int i = 0; i < ori.size() - 1; i++){
-            ori.get(i).next = ori.get(i + 1);
-        }
-        ori.get(ori.size() - 1).next = null;
+        p.next = null;
         return nhead;
     }
 }
