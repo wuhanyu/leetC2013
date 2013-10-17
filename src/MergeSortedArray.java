@@ -1,16 +1,16 @@
 public class Solution {
     public void merge(int A[], int m, int B[], int n) {
-        int bi = B.length - 1;
-        int ai = A.length - B.length - 1;
-        for (int i = A.length - 1; i >= 0; i--){
-            int a = ai >= 0 ? A[ai] : Integer.MIN_VALUE;
-            int b = bi >= 0 ? B[bi] : Integer.MIN_VALUE;
-            if (a > b) {
-                A[i] = a;
-                ai--;
+        int i = m - 1;
+        int j = n - 1;
+        for (int p = m + n - 1; p >= 0; p--) {
+            int a = i >= 0 ? A[i] : Integer.MIN_VALUE;
+            int b = j >= 0 ? B[j] : Integer.MIN_VALUE;
+            if (a < b) {
+                A[p] = b;
+                j--;
             } else {
-                A[i] = b;
-                bi--;
+                A[p] = a;
+                i--;
             }
         }
     }
