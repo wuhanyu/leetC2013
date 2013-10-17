@@ -1,38 +1,41 @@
-public class Solution {
+public class WordBreakII {
     public ArrayList<String> wordBreak(String s, Set<String> dict) {
-        if (s == null) return new ArrayList<String>();
-        boolean[] dp = new boolean[s.length() + 1];
-        dp[0] = true;
-        for (int i = 0; i < s.length(); i++){
-            if (dp[i]) {
-                for (String word : dict) {
-                    if (s.length() - i >= word.length() && 
-                    s.substring(i, i + word.length()).equals(word)) dp[i + word.length()] = true;
-                }
-            }
-        }
-        if (!dp[s.length()]) return new ArrayList<String>();
+        ArrayList<String> result = new ArrayList<String>();
+        if (s == null) return result;
         
-        ArrayList<ArrayList<String>> wordlists = new ArrayList<ArrayList<String>>();
-        for (int i = 0; i <= s.length(); i++) wordlists.add(new ArrayList<String>());
+        ArrayList<ArrayList<Integer>> wordlists = new ArrayList<ArrayList<Integer>>();
+        for (int i = 0; i <= s.length(); i++) wordlists.add(new ArrayList<Integer>());
         for (int i = 0; i < s.length(); i++){
-            ArrayList<String> words = wordlists.get(i);
+            ArrayList<Integer> words = wordlists.get(i);
             if (words.size() > 0 || i == 0) {
                 for (String word : dict) {
                     if (s.length() - i >= word.length() && 
                     s.substring(i, i + word.length()).equals(word)) {
-                        ArrayList<String> twords = wordlists.get(i + word.length());
-                        if (i == 0) twords.add(word);
-                        else {
-                            for (int j = 0; j < words.size(); j++){
-                                twords.add(words.get(j) + " " + word);
-                            }
-                        }
+                        wordlists.get(i + word.length()).add(i);
                     }
                 }
             }
         }
         
-        return wordlists.get(s.length());
+        if (wordlists.get(s.length()).size() == 0) return result;
+        else {
+            result = getResult(wordlists, s.length(), s);
+        }
+        
+        return result;
+    }
+    
+    public ArrayList<String> getResult(ArrayList<ArrayList<Integer>> wordlists, int index, String s) {
+        ArrayList<Integer> words = wordlists.get(index);
+        ArrayList<String> result = new ArrayList<String>();
+        for (int i = 0; i < words.size(); i++) {
+            if (words.get(i) == 0) result.add(s.substring(0, index));
+            else {
+                ArrayList<String> pre = getResult(wordlists, words.get(i), s);
+                String word = s.substring(words.get(i), index);
+                for (int j = 0; j < pre.size(); j++) result.add(pre.get(j) + " " + word);
+            }
+        }
+        return result;
     }
 }
