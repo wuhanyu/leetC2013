@@ -9,58 +9,24 @@
  *     }
  * }
  */
-public class PartitionList {
+public class Solution {
     public ListNode partition(ListNode head, int x) {
-        if (head == null) return head;
-        ListNode p = head;
-        ListNode last = null;
-        if (head.val < x){      
-            while (p != null && p.val < x){
-                last = p;
-                p = p.next;
+        ListNode nhead = new ListNode(-1);
+        ListNode ncur = nhead;
+        ListNode pivot = new ListNode(x);
+        ListNode pcur = pivot;
+        while (head != null) {
+            if (head.val < x) {
+                ncur.next = head;
+                ncur = head;
+            } else {
+                pcur.next = head;
+                pcur = head;
             }
-            if (p != null){
-                ListNode bh = p;
-                last.next = p.next;
-                ListNode bp = bh;
-                p = p.next;
-                while (p != null){
-                    if (p.val < x){
-                        last = p;
-                    } else {
-                        bp.next = p;
-                        bp = p;
-                        last.next = p.next;
-                    }
-                    p = p.next;
-                }
-                bp.next = null;
-                last.next = bh;
-            }
-        } else {
-             while (p != null && p.val >= x){
-                last = p;
-                p = p.next;
-            }
-            if (p != null){
-                ListNode sh = p;
-                last.next = p.next;
-                ListNode sp = sh;
-                p = p.next;
-                while (p != null){
-                    if (p.val >= x){
-                        last = p;
-                    } else {
-                        sp.next = p;
-                        sp = p;
-                        last.next = p.next;
-                    }
-                    p = p.next;
-                }
-                sp.next = head;
-                head = sh;
-            }        
+            head = head.next;
         }
-        return head;
+        ncur.next = pivot.next;
+        pcur.next = null;
+        return nhead.next;
     }
 }
