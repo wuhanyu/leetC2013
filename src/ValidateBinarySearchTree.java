@@ -9,11 +9,20 @@
  */
 public class Solution {
     public boolean isValidBST(TreeNode root) {
-        return isValidBST(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
-    }
-    
-    public boolean isValidBST(TreeNode root, int min, int max) {
         if (root == null) return true;
-        return (root.val > min && root.val < max && isValidBST(root.left, min, root.val) && isValidBST(root.right, root.val, max));
+        Stack<TreeNode> st = new Stack<TreeNode>();
+        int val = Integer.MIN_VALUE;
+        while (!st.isEmpty() || root != null) {
+            if (root != null) {
+                st.push(root);
+                root = root.left;
+            } else {
+                root = st.pop();
+                if (root.val <= val) return false;
+                val = root.val;
+                root = root.right;
+            }
+        }
+        return true;
     }
 }
