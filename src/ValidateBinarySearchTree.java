@@ -7,23 +7,13 @@
  *     TreeNode(int x) { val = x; }
  * }
  */
-public class ValidateBinarySearchTree {
+public class Solution {
     public boolean isValidBST(TreeNode root) {
+        return isValidBST(root, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+    
+    public boolean isValidBST(TreeNode root, int min, int max) {
         if (root == null) return true;
-        Stack<TreeNode> st = new Stack<TreeNode>();
-        int val = Integer.MIN_VALUE;
-        while (true) {
-            if (root != null) {
-                st.push(root);
-                root = root.left;
-            } else {
-                root = st.pop();
-                if (root.val <= val) return false;
-                val = root.val;
-                root = root.right;
-            }
-            if (root == null && st.isEmpty()) break;
-        }
-        return true;
+        return (root.val > min && root.val < max && isValidBST(root.left, min, root.val) && isValidBST(root.right, root.val, max));
     }
 }
