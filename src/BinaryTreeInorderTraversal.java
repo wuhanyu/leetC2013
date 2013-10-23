@@ -7,30 +7,21 @@
  *     TreeNode(int x) { val = x; }
  * }
  */
-public class BinaryTreeInorderTraversal{
+public class BinaryTreeInorderTraversal {
     public ArrayList<Integer> inorderTraversal(TreeNode root) {
         ArrayList<Integer> result = new ArrayList<Integer>();
         if (root == null) return result;
-        TreeNode cur = root;
-        TreeNode pre = null;
-        while (cur != null) {
-            if (cur.right == null) {
-                result.add(cur.val);
-                cur = cur.left;
+        Stack<TreeNode> st = new Stack<TreeNode>();
+        while (root != null || !st.isEmpty()) {
+            if (root != null) {
+                st.push(root);
+                root = root.left;
             } else {
-                pre = cur.right;
-                while (pre.left != null && pre.left != cur) pre = pre.left;
-                if (pre.left == cur) {
-                    result.add(cur.val);
-                    pre.left = null;
-                    cur = cur.left;
-                } else {
-                    pre.left = cur;
-                    cur = cur.right;
-                }
+                root = st.pop();
+                result.add(root.val);
+                root = root.right;
             }
         }
-        Collections.reverse(result);
         return result;
     }
 }
