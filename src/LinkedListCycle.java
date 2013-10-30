@@ -9,16 +9,17 @@
  *     }
  * }
  */
-public class Solution {
+ //Floyd's cycle-finding algorithm
+public class LinkedListCycle {
     public boolean hasCycle(ListNode head) {
-        if (head == null) return false;
-        ListNode p = head.next;
-        while (p != null && p != head) {
-            ListNode next = p.next;
-            p.next = head;
-            p = next;
+        if (head == null || head.next == null) return false;
+        ListNode p = head;
+        ListNode q = head.next;
+        while (q != null && q.next != null) {
+            if (p == q) return true;
+            p = p.next;
+            q = q.next.next;
         }
-        if (p == head) return true;
-        else return false;
+        return false;
     }
 }
